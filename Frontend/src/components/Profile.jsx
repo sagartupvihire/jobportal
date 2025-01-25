@@ -1,4 +1,4 @@
-import { Camera, Contact, Mail, Pen, Plus } from "lucide-react"
+import { Camera, Contact, Loader2, Mail, Pen, Plus } from "lucide-react"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
@@ -72,17 +72,15 @@ const Profile = () => {
         e.preventDefault();
         console.log("resume", resume);
         console.log("uploading resume");
-        const reader = new FileReader();
+        // const reader = new FileReader();
 
-        reader.readAsDataURL(resume);
-        reader.onload = async () => {
-            const base64Image = reader.result;
-            setSelectedImg(base64Image);
-            await updateResume({ resume: base64Image });
-        };
-
-        await updateResume(resume)
+        // reader.readAsDataURL(resume);
+        // reader.onload = async () => {
+        //     const base64Image = reader.result;
+        //     setSelectedImg(base64Image);
+        await updateResume(resume);
     };
+
 
     return (
         <div>
@@ -168,7 +166,7 @@ const Profile = () => {
                     <Label className="font-medium text-xl">Resume</Label>
 
                     {isResume ? (
-                        <a className="text-blue-600 hover:underline" href="/resume.pdf" target="_blank" download>
+                        <a className="text-blue-600 hover:underline" href={authUser.profile?.resume} target="_blank" download>
                             Download Resume
                         </a>
                     ) : (
@@ -178,13 +176,14 @@ const Profile = () => {
                     <form onSubmit={uploadResume} className="mt-2">
                         <Input
                             type="file"
+                            accept=".pdf"
                             name="resume"
                             id="resume"
                             className="w-full"
                             onChange={e => setResume(e.target?.files?.[0] || null)}
                         />
-                        <Button type="submit" className="mt-2">
-                            { isResumeUploading ? "Uploading Resume" : "Upload Resume"}
+                        <Button type="submit" className="mt-2 w-full">
+                            {isResumeUploading ? <Loader2 className="animate-spin" /> : "Upload Resume"}
                         </Button>
                     </form>
                 </div>

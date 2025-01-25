@@ -16,7 +16,7 @@ const Navbar = () => {
     // useEffect(() => {
     //     checkAuth()
     // }, [checkAuth,authUser,logout])
-
+    console.log("authUser", authUser?.role)
 
     return (
         <div className="bg-white">
@@ -28,7 +28,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-12">
                     <ul className="flex space-x-4 font-medium items-center gap-5">
                         {
-                            authUser?.role === "recuiter" ? (
+                            authUser?.role === "recruiter" ? (
                                 <>
 
                                     <li ><Link to="admin/jobs">Jobs</Link></li>

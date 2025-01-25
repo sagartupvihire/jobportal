@@ -1,4 +1,3 @@
-
 import Cloudinary from "../lib/cloudinary.js";
 import User from "../model/user.model.js";
 
@@ -91,18 +90,21 @@ export const uploadResume = async (req, res) => {
     console.log("in uploadResume controller");
     const userId = req.userId;
     try {
-        const { resume } = req.body;
-        
-        
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(400).json({ message: "User Not Found" });
-        }
+        const resume = req.file; // Access the uploaded file
+
         if (!resume) {
             return res.status(400).json({ message: "Resume is required" });
         }
 
-        const uploadRes = await Cloudinary.uploader.upload(resume);
+        // Upload the PDF file to Cloudinary
+        const uploadRes = await Cloudinary.uploader.upload(resume.path, {
+            resource_type: "raw" // Specify that the file is not an image
+        });
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({ message: "User Not Found" });
+        }
 
         user.profile.resume = uploadRes.secure_url;
         await user.save();
@@ -114,3 +116,4 @@ export const uploadResume = async (req, res) => {
         return res.status(400).json({ message: "Error uploading resume", error });
     }
 }
+

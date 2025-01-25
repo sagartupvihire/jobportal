@@ -5,7 +5,7 @@ import cloudinary from "cloudinary";
 
 export const register = async (req, res) => {
     try {
-        const { name, email, password, phonenumber ,file} = req.body;
+        const { name, email, password, phonenumber ,file,role} = req.body;
         console.log(name, email, password, phonenumber);
         if (!name || !email || !password || !phonenumber) {
             return res.status(400).json({ message: "All fields are required" });
@@ -31,6 +31,7 @@ export const register = async (req, res) => {
             email,
             password : hashPassword,
             phonenumber,
+            role,
             profilepic : file
         });
 

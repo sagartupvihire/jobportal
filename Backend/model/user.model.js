@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     phonenumber : {type : String, required : true},
     profilepic : {type : String, default : ""},
     avatar : {type : String, default : ""},
-    role : {type : String, enum :["student", "recruiter"], default : "student"},
+    role : {type : String, enum :["student", "recruiter"], required : true},
     profile :{
         bio:{type : String, default : ""},
         location:{type : String, default : ""},

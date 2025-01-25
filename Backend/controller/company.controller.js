@@ -3,10 +3,11 @@ import Company from "../model/company.model.js";
 
 export const registerCompany = async (req, res) => {
     try {
-        const { companyname, description,email, location, website, linkedin } = req.body;
-        if (!companyname || !description || !location || !website || !linkedin) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
+        const { companyname, description, email, location, website } = req.body;
+        // if (!companyname || !description || !location || !website || !linkedin) {
+        //     return res.status(400).json({ message: "All fields are required" });
+        // }
+        console.log(companyname, description, email, location, website);
         const companyExists = await Company.findOne({ companyname });
         if (companyExists) {
             return res.status(400).json({ message: "Company already exists" });
@@ -14,12 +15,12 @@ export const registerCompany = async (req, res) => {
         }
 
         const company = await Company.create({
-            companyname,
-            description,
-            email,
-            location,
-            website,
-            linkedin,
+            companyname : companyname ||"",
+            description : description ||"",
+            email : email ||"",
+            location : location ||"",
+            website : website ||"",
+            
             createdBy: req.userId
         });
 
@@ -35,7 +36,7 @@ export const registerCompany = async (req, res) => {
 export const getCompany = async (req, res) => {
     try {
         const userId = req.userId;
-        const company = await Company.find();
+        const company = await Company.find({ createdBy: userId });
         if (!company) {
             return res.status(400).json({ message: "No company found", success: false });
         }
@@ -65,8 +66,8 @@ export const updateCompany = async (req, res) => {
 
         const { companyname, description, location, website, linkedin } = req.body;
         const file = req.file;
-        console.log(companyname ,"update");
-        
+        console.log(companyname, "update");
+
         if (!companyname) {
             return res.status(400).json({ message: "Company not found", success: false });
         }
@@ -75,7 +76,7 @@ export const updateCompany = async (req, res) => {
         if (!companyExists) {
             return res.status(400).json({ message: "Company not found", success: false });
         }
-        if(companyExists.createdBy != req.userId){
+        if (companyExists.createdBy != req.userId) {
             return res.status(400).json({ message: "You are not authorized to update this company", success: false });
         }
 
@@ -85,10 +86,10 @@ export const updateCompany = async (req, res) => {
             location,
             website,
             linkedin,
-            
+
         }
-        const company = await Company.findByIdAndUpdate( req.params.id, updatedata, { new: true });
-        
+        const company = await Company.findByIdAndUpdate(req.params.id, updatedata, { new: true });
+
         if (!company) {
             return res.status(400).json({ message: "Company not found", success: false });
         }

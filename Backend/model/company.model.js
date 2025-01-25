@@ -6,7 +6,7 @@ const companySchema = new mongoose.Schema({
     description : {type : String, required : true},
     location : {type : String, required : true},
     website : {type : String, required : true},
-    linkedin : {type : String, required : true},
+   
     logo : {type : mongoose.Schema.Types.ObjectId, ref : "User", },
     createdBy : {type : mongoose.Schema.Types.ObjectId, ref : "User", required : true}, 
 },{timestamps : true});

@@ -1,5 +1,3 @@
-
-
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
@@ -101,16 +99,23 @@ export const useAuthStore = create((set) => ({
     },
     updateResume: async (resume) => {
         try {
-            set({isResumeUploading :true})
-            const res = await axiosInstance.post("/user/uploadresume", resume)
-            set({ authUser: res })
-            toast.success("Resume uploaded successfully")
+            set({ isResumeUploading: true });
+            const formData = new FormData();
+            formData.append('resume', resume);
+
+            const res = await axiosInstance.post("/user/uploadresume", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            set({ authUser: res.data.user });
+            toast.success("Resume uploaded successfully");
         } catch (error) {
             console.log("error in uploadResume", error);
-            toast.error(error.response.data.message)
-        }
-        finally{
-            set({isResumeUploading : false})
+            toast.error(error.response.data.message);
+        } finally {
+            set({ isResumeUploading: false });
         }
     }
 })); 

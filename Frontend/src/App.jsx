@@ -15,6 +15,9 @@ import Jobs from './components/Jobs'
 import Browse from './components/Browse'
 import Profile from './components/Profile'
 import JobsDescription from './components/JobsDescription.jsx'
+import Companies from './components/admin/Companies.jsx'
+import CompaniesCreate from './components/admin/CompaniesCreate.jsx'
+import CompanySetup from './components/admin/CompanySetup'
 function App() {
 
     const { authUser, checkAuth, } = useAuthStore()
@@ -38,6 +41,11 @@ function App() {
                 <Route path='/browse' element={<Browse  />} />
                 <Route path="/profile" element={authUser ? <Profile/> : <Navigate to="/login" />} />
                 <Route path='/description/:id' element={<JobsDescription />} />
+                <Route path='/admin/companies' element={<Companies/>} />
+                <Route path='*' element={<Navigate to="/" />} />
+                <Route path='/admin/companies/create' element={<CompaniesCreate/>} />
+                <Route path='/admin/companies/:companyId' element={<CompanySetup/>} />
+
             </Routes>
             <Toaster />
         </>
