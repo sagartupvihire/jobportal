@@ -1,56 +1,56 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
-import { Edit2, MoreHorizontal } from "lucide-react"
-import { Avatar, AvatarImage } from "../ui/avatar"
+import { Edit2, Eye, MoreHorizontal } from "lucide-react"
+
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import {  useNavigate } from "react-router-dom"
 
+const AdminJobsTable = ({ jobs }) => {
 
-const CompaniesTable = ({ Companies }) => {
-    const navigate = useNavigate()
-
-
+const navigate = useNavigate()
 
     return (
         <div className="">
             <Table >
                 <TableCaption>
-                    A list of your registered companies
+                    A list of your recent posted jobs
                 </TableCaption>
                 <TableHeader >
                     <TableRow >
                         <TableHead>
-                            Logo
+                            Company
                         </TableHead>
-                        <TableHead>Name</TableHead>
+                        <TableHead>Role</TableHead>
                         <TableHead>Date</TableHead>
-                        <TableHead className="">Actions</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody className="">
 
 
                     {
-                        Companies?.map((company) => (
+                        jobs?.map((job) => (
 
-                            <tr key={company._id}>
-                                <TableCell className="cursor-pointer"><Avatar>
-                                    <AvatarImage src={company?.logo ? company.logo : "https://github.com/shadcn.png"} />
-                                </Avatar></TableCell>
-                                <TableCell>{company.companyname}</TableCell>
-                                <TableCell>{company.createdAt.split("T")[0]}</TableCell>
+                            <tr key={job._id}>
+                                <TableCell className="cursor-pointer">{job.company.companyname}</TableCell>
+                                <TableCell>{job.title}</TableCell>
+                                <TableCell>{job.createdAt.split('T')[0]}</TableCell>
                                 <TableCell className="">
 
                                     <Popover>
                                         <PopoverTrigger>
-                                            <MoreHorizontal />
+                                            <MoreHorizontal className="text-right" />
                                         </PopoverTrigger>
                                         <PopoverContent className="w-32" >
-                                            <div onClick={() => navigate(`/admin/companies/${company._id}`)} className="flex items-center gap-2 w-fit cursor-pointer">
-                                                <Edit2 className="w-4 " />
-                                                <span>Edit</span>
+                                            <div onClick={() => navigate(`/admin/companies/${job._id}`)} className="flex items-center gap-4 w-fit cursor-pointer">
 
+                                                <Edit2 className="w-4 " />
+                                                <span className="">Edit</span>
+                                            </div>
+
+                                            <div onClick={() => navigate(`/admin/job/${job._id}/applicants`)} className="flex items-center gap-4 w-fit cursor-pointer">
+                                                <Eye className="w-4" />
+                                                <span>Applicants</span>
                                             </div>
                                         </PopoverContent>
                                     </Popover>
@@ -61,7 +61,7 @@ const CompaniesTable = ({ Companies }) => {
                         )
 
                     }
-                    
+
 
 
 
@@ -71,4 +71,4 @@ const CompaniesTable = ({ Companies }) => {
     )
 }
 
-export default CompaniesTable
+export default AdminJobsTable

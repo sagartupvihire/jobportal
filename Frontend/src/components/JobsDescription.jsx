@@ -12,13 +12,15 @@ const JobsDescription = () => {
 
     const { getJobById, jobById, applyJob } = useJobStore()
     const { authUser } = useAuthStore()
+
     const JobId = useParams().id
-    const isApply = jobById?.applicants?.includes(authUser?._id);
+    const isApply = jobById?.applications?.includes(authUser?._id);
 
 
     console.log("JobId", jobById)
     console.log("isApply", isApply)
     console.log("authUser", authUser?._id)
+
     useEffect(() => {
         getJobById(JobId)
     }, [])
@@ -28,6 +30,7 @@ const JobsDescription = () => {
     }
 
     console.log("jobById", jobById)
+
     return (
         <div className="max-w-6xl mx-auto my-10">
             <div className="flex items-center justify-between">
@@ -50,7 +53,7 @@ const JobsDescription = () => {
                 <h1 className="font-bold my-1">Job Description: <span className="font-normal pl-4 text-gray-800"> {jobById?.description}</span></h1>
                 <h1 className="font-bold my-1">Experience: <span className="font-normal pl-4 text-gray-800"> {jobById?.experience} years</span></h1>
                 <h1 className="font-bold my-1">Salary: <span className="font-normal pl-4 text-gray-800"> {jobById?.salary}</span></h1>
-                <h1 className="font-bold my-1">Total Applicants: <span className="font-normal pl-4 text-gray-800"> {jobById?.applicants.length}</span></h1>
+                <h1 className="font-bold my-1">Total Applicants: <span className="font-normal pl-4 text-gray-800"> {jobById?.applications?.length}</span></h1>
                 <h1 className="font-bold my-1">Posted Date: <span className="font-normal pl-4 text-gray-800">{new Date(jobById?.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',

@@ -7,17 +7,19 @@ import { useCompanyStore } from "@/store/useCompanyStore"
 
 
 
+
+
 const Companies = () => {
     const navigate = useNavigate()
 
     const {getCompany , getAllCompanies} = useCompanyStore()
     const [input, setInput] = useState()
-    const [filtercompanies, setfiltercompanies] = useState(getAllCompanies)
+    const [filtercompanies, setfiltercompanies] = useState(getAllCompanies) 
 
     useEffect(() => {
         getCompany()
-        
-    }, [])
+        setfiltercompanies(getAllCompanies)
+    }, [getCompany,])
 
     useEffect(() => {
         if (input) {
@@ -25,7 +27,7 @@ const Companies = () => {
         } else {
             setfiltercompanies(getAllCompanies)
         }
-    }, [input])
+    }, [input, getAllCompanies])
 
  
 

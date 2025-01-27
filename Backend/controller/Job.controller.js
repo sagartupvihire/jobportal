@@ -1,18 +1,37 @@
 import Job from "../model/job.model.js";
-
+import Company from "../model/company.model.js"
 export const postJob = async (req, res) => {
+    console.log("api calledd admin")
+
     try {
         const { title, company, location, description, salary, requirements, experience, skills, jobType, position } = req.body;
-        
-        if (!title || !company || !location || !description || !salary || !requirements || !experience || !skills || !jobType || !position) {
-            return res.status(400).json({ message: "All fields are required" ,data : req.body});
+
+        console.log(title, company, location, description, salary, requirements, experience, skills, jobType, position)
+
+        if (!title || !company || !location || !description || !salary || !requirements || !experience || !jobType || !position) {
+            return res.status(400).json({ message: "All fields are required", data: req.body });
         }
+
+        const existcompany = await Company.findById(company)
+
+
+        if (!existcompany) {
+
+            return res.status(400).json({ message: "Company not found", success: false });
+        }
+
+        if (existcompany.createdBy?.toString() != req.userId?.toString()) {
+            console.log("existcompany.createdBy", existcompany.createdBy, "req.userId", req.userId);
+            return res.status(400).json({ message: "You are not authorized to update this company", success: false });
+        }
+
+
         const job = await Job.create({
             title,
             company,
             location,
             description,
-            salary : Number(salary),
+            salary: Number(salary),
             requirements,
             experience,
             skills,
@@ -22,7 +41,7 @@ export const postJob = async (req, res) => {
             createdAt: Date.now(),
         });
 
-        res.status(200).json({message: "Job posted successfully", job});
+        res.status(200).json({ message: "Job posted successfully", job });
     } catch (error) {
         console.log("error in postJob controller", error);
         res.status(400).json({ message: "Error in posting job", error });
@@ -39,14 +58,16 @@ export const getAllJobs = async (req, res) => {
         //         {description: { $regex: keyword, $options: "i" } },
 
         // ]}
-        const jobs = await Job.find({$or: [
+        const jobs = await Job.find({
+            $or: [
                 { title: { $regex: new RegExp(keyword, "i") } },
                 { description: { $regex: new RegExp(keyword, "i") } }
-            ]}).populate({path : "company"}).sort({ createdAt: -1 });
+            ]
+        }).populate({ path: "company" }).sort({ createdAt: -1 });
 
-            
+
         if (!jobs) {
-            return res.status(400).json({ message:  "No jobs found", success: false });
+            return res.status(400).json({ message: "No jobs found", success: false });
         }
         res.status(200).json({ jobs });
     } catch (error) {
@@ -75,7 +96,7 @@ export const getJobById = async (req, res) => {
 
 export const getAdminJob = async (req, res) => {
     try {
-        const jobs = await Job.find({ createdBy: req.userId });
+        const jobs = await Job.find({ createdBy: req.userId }).populate("company")
         if (!jobs) {
             return res.status(400).json({ message: "No jobs found", success: false });
         }

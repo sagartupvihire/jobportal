@@ -4,7 +4,11 @@ import Job from "../model/job.model.js";
 export const getAppliedJobs = async (req, res) => {
     try {
         
-        const applications = await Application.find({ applicant: req.userId }).populate("job").sort({ createdAt: -1 });
+        const applications = await Application.find({ applicant: req.userId }).populate({
+            path: "job",
+            options: { sort: { createdAt: -1 } },
+            populate: { path: "company", sort: { createdAt: -1 } },
+        });
 
         if (!applications) {
             return res.status(400).json({ message: "No applications found", success: false });
@@ -45,10 +49,7 @@ export const applyForJob = async (req, res) => {
         if (!job) {
             return res.status(400).json({ message: "Job not found", success: false });
         }
-        const jobApplicants = job.applicants;
-        if (jobApplicants.includes(userId)) {
-            return res.status(400).json({ message: "You have already applied for this job", success: false });
-        }
+        
         
         const existApplication = await Application.findOne({ job: jobId, applicant: userId });
 
@@ -57,17 +58,18 @@ export const applyForJob = async (req, res) => {
         }
         
         
-        const application = await Application.create({ job: jobId, applicant: userId });
-        job.applicants.push(userId);
+        const application = await Application.create({ job: jobId, applicant: userId, status: "pending" });
+        if (!application) {
+            
+            return res.status(400).json({ message: "Application not found", success: false });
+        }
 
-        console.log("job", job);
-        console.log("job applicants", job.applicants);
+        job.applications.push(application._id);
+
+        
         
         await job.save();
 
-        if (!application) {
-            return res.status(400).json({ message: "Application not found", success: false });
-        }
 
         return res.status(201).json({message: "Application created successfully", success: true});
     } catch (error) {
@@ -79,12 +81,23 @@ export const applyForJob = async (req, res) => {
 export const getApplicants = async (req, res) => {
     try {
         const { id } = req.params;
-        const job = await Job.findById(id).populate("applicants").sort({ createdAt: -1 });
+        const job = await Job.findById(id).populate({
+            path: "applications",
+            options: { sort: { createdAt: -1 } },
+            populate :{
+                path: "applicant",
+                options: { sort: { createdAt: -1 } },
+            }
+        })
+        
+        console.log("job", job);
         if (!job) {
             return res.status(400).json({ message: "Job not found", success: false });
         }
         
-        res.status(200).json({ job });
+        res.status(200).json({ job: job });
+
+        
     } catch (error) {
         console.log("error in getApplicants controller", error);
         res.status(400).json({ message: "Error in getting applications", error });

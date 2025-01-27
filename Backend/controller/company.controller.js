@@ -1,5 +1,5 @@
 import Company from "../model/company.model.js";
-
+import Cloudinary from "../lib/cloudinary.js";
 
 export const registerCompany = async (req, res) => {
     try {
@@ -50,6 +50,7 @@ export const getCompany = async (req, res) => {
 export const getCompanyById = async (req, res) => {
     try {
         const { id } = req.params;
+        console.log("company id",id);
         const company = await Company.findById(id);
         if (!company) {
             return res.status(400).json({ message: "Company not found", success: false });
@@ -63,29 +64,36 @@ export const getCompanyById = async (req, res) => {
 
 export const updateCompany = async (req, res) => {
     try {
+        const companyId = req.params.id;
+        console.log("company id in update",companyId);
+        const { name, description, location, website, linkedin, logo } = req.body;
 
-        const { companyname, description, location, website, linkedin } = req.body;
         const file = req.file;
-        console.log(companyname, "update");
+        console.log("file", logo);
+        console.log(name, "update");
 
-        if (!companyname) {
-            return res.status(400).json({ message: "Company not found", success: false });
-        }
+       
 
-        const companyExists = await Company.findOne({ companyname });
+        
+        const companyExists = await Company.findById(req.params.id);
         if (!companyExists) {
-            return res.status(400).json({ message: "Company not found", success: false });
+            return res.status(400).json({ message: "Company not exists", success: false });
         }
-        if (companyExists.createdBy != req.userId) {
+        if (companyExists.createdBy.toString() != req.userId.toString()) {
+            console.log("companyExists.createdBy",companyExists.createdBy, "req.userId",req.userId);
             return res.status(400).json({ message: "You are not authorized to update this company", success: false });
         }
 
+        const uploadRes = await Cloudinary.uploader.upload(logo);
+
+
         const updatedata = {
-            companyname,
+            companyname : name,
             description,
             location,
             website,
             linkedin,
+            logo : uploadRes.secure_url
 
         }
         const company = await Company.findByIdAndUpdate(req.params.id, updatedata, { new: true });

@@ -18,6 +18,9 @@ import JobsDescription from './components/JobsDescription.jsx'
 import Companies from './components/admin/Companies.jsx'
 import CompaniesCreate from './components/admin/CompaniesCreate.jsx'
 import CompanySetup from './components/admin/CompanySetup'
+import AdminJobs from './components/admin/AdminJobs'
+import AdminCreateJob from './components/admin/AdminCreateJob.jsx'
+import Applicants from './components/admin/Applicants.jsx'
 function App() {
 
     const { authUser, checkAuth, } = useAuthStore()
@@ -45,7 +48,9 @@ function App() {
                 <Route path='*' element={<Navigate to="/" />} />
                 <Route path='/admin/companies/create' element={<CompaniesCreate/>} />
                 <Route path='/admin/companies/:companyId' element={<CompanySetup/>} />
-
+                <Route path='/admin/jobs/' element={<AdminJobs/>} />
+                <Route path='/admin/job/create' element={<AdminCreateJob/>}/>
+                <Route path='/admin/job/:jobId/applicants'element={<Applicants/>}/>
             </Routes>
             <Toaster />
         </>

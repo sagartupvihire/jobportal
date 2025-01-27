@@ -1,6 +1,7 @@
 import { Badge } from "./ui/badge"
 
-const latestJobCard = ({job}) => {
+const 
+latestJobCard = ({job}) => {
     return (
         <div className="p-5 rounded-md hover:shadow-2xl shadow-lg hover:scale-105 transition-transform duration-200 bg-white border-gray-400 cursor-pointer">
             <div>

@@ -3,6 +3,7 @@ const router = express.Router();
 
 import { registerCompany, getCompanyById, updateCompany, getCompany } from "../controller/company.controller.js";   
 import { isAuthenticated } from "../middleware/isAuthenticated.js"; 
+import { get } from "mongoose";
 
 router.post("/register", isAuthenticated, registerCompany);
 router.get("/getcompany", isAuthenticated, getCompany);
