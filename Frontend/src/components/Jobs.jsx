@@ -20,6 +20,7 @@ const Jobs = () => {
     }, [getJob])
 
     
+
     
     if(!job){
         return <div><Loader/></div>

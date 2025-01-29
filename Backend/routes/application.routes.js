@@ -6,10 +6,11 @@ import { isAuthenticated } from "../middleware/isAuthenticated.js";
 import { get } from "mongoose";
 
 router.post("/apply/:id", isAuthenticated, applyForJob);
-router.post("/status/:id/update", isAuthenticated, updateStatus);
+router.put("/status/:id/update", isAuthenticated, updateStatus);
 router.get("/getapplicants/:id", isAuthenticated, getApplicants);
 router.get("/getapplication/:id", isAuthenticated, getApplicationById);
 router.get("/getappliedjobs", isAuthenticated, getAppliedJobs);
+
 
 
 export default router

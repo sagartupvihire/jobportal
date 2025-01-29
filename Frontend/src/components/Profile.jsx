@@ -192,8 +192,10 @@ const Profile = () => {
 
             <div className="max-w-4xl  mx-auto bg-white border border-gray-500 rounded-2xl p-5 my-5">
                 <h1 className="font-bold text-lg my-5 ">Applied Jobs</h1>
-
-                <ApliedJobsTable />
+                
+               
+                    <ApliedJobsTable />
+                
 
             </div>
 

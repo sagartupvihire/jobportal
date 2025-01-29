@@ -49,7 +49,9 @@ export const postJob = async (req, res) => {
 };
 
 export const getAllJobs = async (req, res) => {
+    console.log("Received query parameters:", req.query);
     const keyword = req.query.keyword || "";
+    console.log("keywords",req.query.keyword)
     try {
 
         // const Query = {
@@ -61,7 +63,17 @@ export const getAllJobs = async (req, res) => {
         const jobs = await Job.find({
             $or: [
                 { title: { $regex: new RegExp(keyword, "i") } },
-                { description: { $regex: new RegExp(keyword, "i") } }
+                { description: { $regex: new RegExp(keyword, "i") } },
+                { location: { $regex: new RegExp(keyword, "i") } },
+                { position: { $regex: new RegExp(keyword, "i") } },
+                { jobType: { $regex: new RegExp(keyword, "i") } },
+                { experience: { $regex: new RegExp(keyword, "i") } },
+                { skills: { $regex: new RegExp(keyword, "i") } },
+                { requirements: { $regex: new RegExp(keyword, "i") } },
+               
+               
+                
+
             ]
         }).populate({ path: "company" }).sort({ createdAt: -1 });
 

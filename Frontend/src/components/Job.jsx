@@ -6,9 +6,12 @@ import { Badge } from "./ui/badge"
 import { useNavigate } from "react-router-dom"
 
 
+
 const Job = ({ jobData }) => {
     const navigate = useNavigate()
-
+    
+    
+    
     const dayAgo = (mongoDbTime) => {
         const createAt =  new Date(mongoDbTime);
         const CurrentTime = new Date();

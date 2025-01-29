@@ -5,11 +5,12 @@ import toast from "react-hot-toast";
 export const useJobStore = create((set) => ({
     job: null,
     jobById : null,
+    searchToQueryJob: null,
     getJob: async () => {
         try {
             const res = await axiosInstance.get(`/job/getjob`);
             set({ job: res.data.jobs });
-            console.log("job fetched",res.data.jobs);
+            
             
         } catch (error) {
             console.log("error in getJob", error);
@@ -37,6 +38,20 @@ export const useJobStore = create((set) => ({
             toast.success("Job applied successfully");
         } catch (error) {
             console.log("error in applyJob", error);
+            toast.error(error.response.data.message);
+        }
+    },
+    searchQuery: async (query) => {
+
+        try {
+            console.log("inside search usejob query", query);
+            const res = await axiosInstance.get(`/job/getjob/?keyword=${query}`);
+            set({ job: res.data.jobs });
+            console.log("job fetched by search",res.data.jobs);
+            
+            console.log("inside search usejob query", query);
+        } catch (error) {
+            console.log("error in getJob", error);
             toast.error(error.response.data.message);
         }
     },

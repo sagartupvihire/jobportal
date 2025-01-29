@@ -44,13 +44,13 @@ function App() {
                 <Route path='/browse' element={<Browse  />} />
                 <Route path="/profile" element={authUser ? <Profile/> : <Navigate to="/login" />} />
                 <Route path='/description/:id' element={<JobsDescription />} />
-                <Route path='/admin/companies' element={<Companies/>} />
+                <Route path='/admin/companies' element={authUser?.role === "recruiter" ?<Companies/>: <Navigate to={'/'}/>} />
                 <Route path='*' element={<Navigate to="/" />} />
-                <Route path='/admin/companies/create' element={<CompaniesCreate/>} />
+                <Route path='/admin/companies/create' element={authUser?.role === "recruiter" ?<CompaniesCreate/>: <Navigate to={'/'}/>} />
                 <Route path='/admin/companies/:companyId' element={<CompanySetup/>} />
-                <Route path='/admin/jobs/' element={<AdminJobs/>} />
-                <Route path='/admin/job/create' element={<AdminCreateJob/>}/>
-                <Route path='/admin/job/:jobId/applicants'element={<Applicants/>}/>
+                <Route path='/admin/jobs/' element={authUser?.role === "recruiter" ?<AdminJobs/>: <Navigate to={'/'}/>} />
+                <Route path='/admin/job/create' element={authUser?.role === "recruiter" ?<AdminCreateJob/> : <Navigate to={'/'}/>}/>
+                <Route path='/admin/job/:jobId/applicants'element={authUser?.role === "recruiter" ?<Applicants/>: <Navigate to={'/'}/>}/>
             </Routes>
             <Toaster />
         </>

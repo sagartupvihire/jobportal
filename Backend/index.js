@@ -1,7 +1,7 @@
 import express, { application } from "express";
 import dotenv from "dotenv";
 
-
+import path from 'path'
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -20,6 +20,8 @@ const corsOption = {
     preflightContinue: true
 }
 
+const _dirname = path.resolve()
+
 app.use(cors(corsOption));
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
@@ -32,6 +34,11 @@ app.use("/v1/api/user", userRoutes);
 app.use("/v1/api/company", companyRoutes);
 app.use("/v1/api/job", jobRoutes);
 app.use("/v1/api/application", applicationRoutes);
+
+app.use(express.static(path.join(_dirname, "/Frontend/dist")))
+app.get("*", (_, res)=>{
+    res.sendFile(path.resolve(_dirname, "Frontend", "dist","index.html"))
+})
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 

@@ -24,7 +24,7 @@ const Applicants = () => {
     return (
         <div>
             <div className="max-w-6xl mx-auto ">
-                <h1 className="text-xl font-bold my-5">Applicants</h1>
+                <h1 className="text-xl font-bold my-5">Applicants ({application.job?.applications?.length})</h1>
 
                 <ApplicantTable applications={application.job?.applications} />
             </div>

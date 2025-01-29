@@ -1,7 +1,16 @@
+import { useApplicationStore } from "@/store/useApplicationStore"
 import { Badge } from "./ui/badge"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
+import { useEffect } from "react"
 
 const ApliedJobsTable = () => {
+    const {getAppliedJob, appliedJobs} = useApplicationStore()
+
+    useEffect(() =>{
+        getAppliedJob()
+    },[ getAppliedJob])
+
+    console.log("applied job",appliedJobs)
     return (
         <div  >
             <Table>
@@ -30,20 +39,21 @@ const ApliedJobsTable = () => {
 
                 </TableHeader>
                     <TableBody >
+
                         {
-                            [1, 2, 3, 4].map((item, i) => (
+                            appliedJobs?.applications?.map((item, i) => (
                                 <TableRow key={i}>
                                     <TableCell>
-                                        01/05/2023
+                                        {item.createdAt.split('T')[0]}
                                     </TableCell>
-                                    <TableCell>Software Engineer </TableCell>
+                                    <TableCell>{item.job.title} </TableCell>
                                     <TableCell>
-                                        Google
+                                        {item.job.company.companyname}
                                     </TableCell>
                                     <TableCell>
-                                        Delhi
+                                        {item.job.location}
                                     </TableCell>
-                                    <TableCell className="text-right"> <Badge>Selected</Badge></TableCell>
+                                    <TableCell className="text-right"> <Badge>{item.status }  </Badge></TableCell>
 
                                 </TableRow>
                             ))

@@ -1,17 +1,32 @@
+/* eslint-disable react/prop-types */
 
 import { MoreHorizontal } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { useApplicationStore } from "@/store/useApplicationStore"
 
-const shortListing = ["accept", "Rejected", "Hired"]
+const shortListing =["pending", "accepted", "rejected"]
 
-export const ApplicantTable = ({applications}) => {
+export const ApplicantTable = ({ applications }) => {
 
-    console.log(applications)
+    const {updateApplicationStatus} = useApplicationStore()
+
+    console.log("apl",applications)
     useEffect(() => {
-            
+        
     })
+    
+    
+
+    const updateStatus = (status,id) => {
+        console.log({status},id)
+        updateApplicationStatus({status}, id)
+    
+    }
+
+
+
     return (
         <div>
 
@@ -30,39 +45,38 @@ export const ApplicantTable = ({applications}) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody className="text-left">
-                {
-                    applications?.map((application, index) => (
-                        
-                    <tr key={index}>
-                        <TableCell className="font-medium">{application.applicant?.name}</TableCell>
-                        <TableCell>{application.applicant?.email}</TableCell>
-                        <TableCell>{application.applicant?.phonenumber}</TableCell>
-                        <TableCell>{application.resume}</TableCell>
-                        <TableCell>{application.createdAt.split('T')[0]}</TableCell>
-                        <TableCell className="text-right">
-                            <Popover>
-                                <PopoverTrigger>
-                                    <MoreHorizontal />
-                                </PopoverTrigger>
+                    {
+                        applications?.map((application) => (
 
-                                <PopoverContent className="w-40">
+                            <tr key={application?.applicant?._id}>
+                                <TableCell className="font-medium">{application.applicant?.name}</TableCell>
+                                <TableCell>{application.applicant?.email}</TableCell>
+                                <TableCell>{application.applicant?.phonenumber}</TableCell>
+                                <TableCell>{application.resume}</TableCell>
+                                <TableCell>{application.createdAt.split('T')[0]}</TableCell>
+                                <TableCell className="text-right">
+                                    <Popover>
+                                        <PopoverTrigger>
+                                            <MoreHorizontal />
+                                        </PopoverTrigger>
 
-                                    {
+                                        <PopoverContent className="w-40">
 
-                                        shortListing.map((status, index) => (
+                                            {
 
-                                            <div className="flex items-center cursor-pointer mt-2" key={index}>
-                                                <span>{status}</span>
-                                            </div>
-                                        ))
-                                    }
-                                </PopoverContent>
+                                                shortListing.map((status, index) => (
+                                                    <div onClick={()=>updateStatus(status,application._id)} className="flex items-center cursor-pointer mt-2" key={index}>
+                                                        <span>{status}</span>
+                                                    </div>
+                                                ))
+                                            }
+                                        </PopoverContent>
 
-                            </Popover>
-                        </TableCell>
-                    </tr>
-                    ))
-                }
+                                    </Popover>
+                                </TableCell>
+                            </tr>
+                        ))
+                    }
                 </TableBody>
 
             </Table>
