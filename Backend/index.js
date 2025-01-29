@@ -35,9 +35,9 @@ app.use("/v1/api/company", companyRoutes);
 app.use("/v1/api/job", jobRoutes);
 app.use("/v1/api/application", applicationRoutes);
 
-app.use(express.static(path.join(_dirname, "/Frontend/dist")))
+app.use(express.static(path.join(_dirname, "/frontend/dist")))
 app.get("*", (_, res)=>{
-    res.sendFile(path.resolve(_dirname, "Frontend", "dist","index.html"))
+    res.sendFile(path.resolve(_dirname, "frontend", "dist","index.html"))
 })
 dotenv.config();
 const PORT = process.env.PORT || 5000;
