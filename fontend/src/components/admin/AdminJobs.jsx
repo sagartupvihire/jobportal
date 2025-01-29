@@ -1,9 +1,9 @@
 import AdminJobsTable from "./AdminJobsTable.jsx"
 
 import { useEffect, useState } from "react"
-import { Button } from "../ui/button"
+import { Button } from "../ui/button.jsx"
 
-import { Input } from "../ui/input"
+import { Input } from "../ui/input.jsx"
 import { useNavigate } from "react-router-dom"
 import { useAdminJob } from "@/store/useAdminJob.js"
 
