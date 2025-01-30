@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:5001/v1/api",
+    baseURL: "https://jobportal-tfy8.onrender.com/v1/api",
     withCredentials: true
 });

@@ -12,7 +12,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const corsOption = {
-    origin: "http://localhost:5173",
+    origin: "https://jobportal-tfy8.onrender.com",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     
